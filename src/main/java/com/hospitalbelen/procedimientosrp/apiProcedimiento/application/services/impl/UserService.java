@@ -1,16 +1,22 @@
-package com.hospitalbelen.procedimientosrp.application.services.impl;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.impl;
 
-import com.hospitalbelen.procedimientosrp.application.DTO.request.LoginRequest;
-import com.hospitalbelen.procedimientosrp.application.DTO.response.AuthResponse;
-import com.hospitalbelen.procedimientosrp.application.services.IUserService;
-import com.hospitalbelen.procedimientosrp.infraestructura.repository.IUserRepository;
-import com.hospitalbelen.procedimientosrp.infraestructura.security.Jwt.JwtService;
-import lombok.RequiredArgsConstructor;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.LoginRequest;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.AuthResponse;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IUserService;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.User;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Servicio;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IUserRepository;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.security.Jwt.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,5 +44,15 @@ public class UserService implements IUserService {
         return AuthResponse.builder()
                 .token(token)
                 .build();
+    }
+
+    public Set<Servicio> getServicesForUser(String username) {
+        User user = iUserRepository.findByUsername(username).orElseThrow();
+        return user.getRoles().stream()
+                .flatMap(role -> role.getServices().stream())
+                .collect(Collectors.toSet());
+    }
+    public List<User> getUsersByRoleId(Integer roleId) {
+        return iUserRepository.findByRoleId(roleId);
     }
 }
