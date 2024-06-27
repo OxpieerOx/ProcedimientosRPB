@@ -1,4 +1,4 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.exception.core;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.core;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

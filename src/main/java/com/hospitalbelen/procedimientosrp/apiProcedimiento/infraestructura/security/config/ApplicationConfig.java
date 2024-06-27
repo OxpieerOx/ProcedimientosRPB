@@ -1,6 +1,6 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.security.config;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.security.config;
 
-import com.hospitalbelen.procedimientosrp.infraestructura.repository.IUserRepository;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

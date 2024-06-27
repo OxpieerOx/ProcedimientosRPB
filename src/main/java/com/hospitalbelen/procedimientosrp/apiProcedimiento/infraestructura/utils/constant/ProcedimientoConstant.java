@@ -1,4 +1,4 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.utils.constant;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.utils.constant;
 
 public class ProcedimientoConstant {
 

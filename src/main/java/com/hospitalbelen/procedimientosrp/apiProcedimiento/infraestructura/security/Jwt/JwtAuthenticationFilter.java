@@ -1,4 +1,4 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.security.Jwt;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.security.Jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

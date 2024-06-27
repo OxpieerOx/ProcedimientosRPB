@@ -1,8 +1,7 @@
-package com.hospitalbelen.procedimientosrp.application.services;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services;
 
-import com.hospitalbelen.procedimientosrp.application.DTO.request.LoginRequest;
-import com.hospitalbelen.procedimientosrp.application.DTO.response.AuthResponse;
-import org.springframework.stereotype.Repository;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.LoginRequest;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.AuthResponse;
 
 
 public interface IUserService {

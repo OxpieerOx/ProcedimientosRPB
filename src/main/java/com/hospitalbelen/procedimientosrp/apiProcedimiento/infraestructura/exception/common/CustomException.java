@@ -1,4 +1,4 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.exception.common;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.common;
 
 public class CustomException extends RuntimeException{
     public CustomException(String message) {super(message);}

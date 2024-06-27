@@ -1,4 +1,4 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.utils;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.utils;
 
 import lombok.Getter;
 

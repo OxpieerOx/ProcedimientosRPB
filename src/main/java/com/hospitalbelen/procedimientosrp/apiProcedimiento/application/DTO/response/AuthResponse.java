@@ -1,4 +1,4 @@
-package com.hospitalbelen.procedimientosrp.application.DTO.response;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

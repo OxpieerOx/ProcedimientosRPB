@@ -1,6 +1,6 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.exception.factory;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.factory;
 
-import com.hospitalbelen.procedimientosrp.infraestructura.exception.core.ErrorResponse;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.core.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

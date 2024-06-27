@@ -1,6 +1,6 @@
-package com.hospitalbelen.procedimientosrp.application.DTO.request;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request;
 
-import com.hospitalbelen.procedimientosrp.infraestructura.utils.constant.ProcedimientoConstant;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.utils.constant.ProcedimientoConstant;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

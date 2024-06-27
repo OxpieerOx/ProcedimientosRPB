@@ -1,9 +1,8 @@
-package com.hospitalbelen.procedimientosrp.api;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.api;
 
-import com.hospitalbelen.procedimientosrp.application.DTO.request.LoginRequest;
-import com.hospitalbelen.procedimientosrp.application.DTO.response.AuthResponse;
-import com.hospitalbelen.procedimientosrp.application.services.IUserService;
-import com.hospitalbelen.procedimientosrp.infraestructura.handler.ResponseHandler;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.LoginRequest;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IUserService;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.handler.ResponseHandler;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

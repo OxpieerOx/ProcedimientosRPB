@@ -1,21 +1,18 @@
-package com.hospitalbelen.procedimientosrp.infraestructura.exception;
+package com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception;
 
-import com.hospitalbelen.procedimientosrp.infraestructura.exception.common.CustomException;
-import com.hospitalbelen.procedimientosrp.infraestructura.exception.common.ResourceNotFoundException;
-import com.hospitalbelen.procedimientosrp.infraestructura.exception.core.ErrorResponse;
-import com.hospitalbelen.procedimientosrp.infraestructura.exception.factory.ErrorResponseFactory;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.common.CustomException;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.common.ResourceNotFoundException;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.core.ErrorResponse;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.factory.ErrorResponseFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.support.WebExchangeBindException;
-import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j(topic = "GlobalExceptionHandler")

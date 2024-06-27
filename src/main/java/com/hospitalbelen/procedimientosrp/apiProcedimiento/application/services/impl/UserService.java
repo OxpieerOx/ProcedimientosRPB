@@ -3,6 +3,7 @@ package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.LoginRequest;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.AuthResponse;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IUserService;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Role;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.User;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Servicio;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IUserRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,5 +56,10 @@ public class UserService implements IUserService {
     }
     public List<User> getUsersByRoleId(Integer roleId) {
         return iUserRepository.findByRoleId(roleId);
+    }
+
+    public Set<Role> getRolesForUser(String username) {
+        User user = iUserRepository.findByUsername(username).orElseThrow();
+        return new HashSet<>(user.getRoles());
     }
 }

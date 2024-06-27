@@ -26,4 +26,11 @@ public class ServicioService implements IServicioService {
                 .map(servicioConverter::toServicioDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ServicioDTO> getAllServices() {
+        return serviceRepository.findAll().stream()
+                .map(servicioConverter::toServicioDTO)
+                .collect(Collectors.toList());
+    }
 }
