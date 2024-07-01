@@ -14,4 +14,6 @@ import java.util.Optional;
 public interface IProcedimientoRepository extends JpaRepository<Procedimiento, Long> {
 
     List<Procedimiento> findByServicioId(Long idServicio);
+
+
 }
