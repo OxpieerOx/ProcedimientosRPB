@@ -22,6 +22,12 @@ public class ErrorResponseFactory {
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
+    public ResponseEntity<Object> createErrorResponse(HttpStatus status, String message) {
+        ErrorResponse errorResponse = new ErrorResponse(status);
+        errorResponse.setMessage(message);
+        return new ResponseEntity<>(errorResponse, status);
+    }
+
 
 
 }

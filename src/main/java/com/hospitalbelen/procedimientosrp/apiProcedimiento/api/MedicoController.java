@@ -27,4 +27,9 @@ public class MedicoController {
     public ResponseEntity<Object> listAllMedicos() {
         return ResponseHandler.generateResponse(HttpStatus.OK, medicoService.findAll(), true);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> listByIdMedicos(@PathVariable Integer id) {
+        return ResponseHandler.generateResponse(HttpStatus.OK, medicoService.findById(id), true);
+    }
 }

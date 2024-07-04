@@ -4,9 +4,11 @@ import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.excep
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.common.ResourceNotFoundException;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.core.ErrorResponse;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.exception.factory.ErrorResponseFactory;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -69,4 +71,39 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return errorFactory.createErrorResponse(HttpStatus.BAD_REQUEST, ex);
     }
 
+    /**
+     * Handles IllegalArgumentException.
+     * @param ex the IllegalArgumentException
+     * @return the ErrorResponse object
+     */
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.error("IllegalArgumentException: {}", ex.getMessage());
+        return errorFactory.createErrorResponse(HttpStatus.BAD_REQUEST, ex);
+    }
+
+    /**
+     * Handles AccessDeniedException.
+     * @param ex the AccessDeniedException
+     * @return the ErrorResponse object
+     */
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
+        log.error("AccessDeniedException: {}", ex.getMessage());
+        return errorFactory.createErrorResponse(HttpStatus.FORBIDDEN, "No autenticado");
+    }
+
+    /**
+     * Handles ExpiredJwtException.
+     * @param ex the ExpiredJwtException
+     * @return the ErrorResponse object
+     */
+    @ExceptionHandler(value = {ExpiredJwtException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException ex) {
+        log.error("ExpiredJwtException: {}", ex.getMessage());
+        return errorFactory.createErrorResponse(HttpStatus.UNAUTHORIZED, "JWT expirado. No autenticado");
+    }
 }

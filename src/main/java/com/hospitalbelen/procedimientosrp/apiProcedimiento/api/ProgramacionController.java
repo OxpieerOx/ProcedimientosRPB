@@ -25,11 +25,18 @@ public class ProgramacionController {
 
     private final IProgramacionService iProgramacionService;
 
-    @PostMapping()
-    public ResponseEntity<Object> createProgramacion(@Valid @RequestBody ProgramacionRequest request)
-    {
-        return ResponseHandler.generateResponse(HttpStatus.OK, iProgramacionService.crear(request),true);
+        @PostMapping()
+        public ResponseEntity<Object> createProgramacion(@Valid @RequestBody ProgramacionRequest request)
+        {
+            return ResponseHandler.generateResponse(HttpStatus.OK, iProgramacionService.crear(request),true);
 
+        }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> buscarporId(
+            @PathVariable("id") Long id) {
+        Optional<Programacion> resultado = iProgramacionService.getbyId(id);
+        return ResponseHandler.generateResponse(HttpStatus.OK, resultado,true);
     }
     @GetMapping("/{fecha}/{idProcedimiento}")
     public ResponseEntity<Object> buscarPorFechaYProcedimiento(
@@ -44,4 +51,19 @@ public class ProgramacionController {
             @PathVariable("idProcedimiento") Long idProcedimiento) {
         return ResponseHandler.generateResponse(HttpStatus.OK, iProgramacionService.findByProcedimientoId( idProcedimiento),true);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> actualizarProgramacion(
+            @PathVariable Long id,
+            @Valid @RequestBody ProgramacionRequest request) {
+        ProgramacionResponse response = iProgramacionService.actualizar(id, request);
+        return ResponseHandler.generateResponse(HttpStatus.OK, response, true);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteProgramacionById(@PathVariable Long id) {
+        iProgramacionService.deleteById(id);
+        return ResponseHandler.generateResponse(HttpStatus.OK, "Programacion eliminada correctamente", true);
+    }
+
+
 }

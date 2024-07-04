@@ -46,6 +46,11 @@ public class ProgramacionService implements IProgramacionService {
     }
 
     @Override
+    public Optional<Programacion> getbyId(Long idProgarmacion) {
+        return iProgramacionRepository.findById(idProgarmacion);
+    }
+
+    @Override
     public ProgramacionResponse crear(ProgramacionRequest entidad) {
         if (iProgramacionRepository.countByFechaAndProcedimientoId(entidad.getFecha(), entidad.getIdProcedimiento()) > 0) {
             throw new IllegalArgumentException("Ya existe una programación para ese procedimiento en la fecha indicada.");
@@ -64,6 +69,37 @@ public class ProgramacionService implements IProgramacionService {
         return programacionConverter.toProgramacionResponseDTO(programacionentity);
 
     }
+
+    @Override
+    public void deleteById(Long id) {
+         iProgramacionRepository.deleteById(id);
+    }
+
+
+    @Override
+    public ProgramacionResponse actualizar(Long id, ProgramacionRequest entidad) {
+        if (!iProgramacionRepository.existsById(id)) {
+            throw new IllegalArgumentException("Programación no encontrada");
+        }
+
+        long count = iProgramacionRepository.countByFechaAndProcedimientoIdExcludingId(entidad.getFecha(), entidad.getIdProcedimiento(), id);
+        if (count > 0) {
+            throw new IllegalArgumentException("Ya existe una programación para ese procedimiento en la fecha indicada.");
+        }
+        Medico medico = medicoRepository.findById(entidad.getIdMedico())
+                .orElseThrow(() -> new IllegalArgumentException("Medico no encontrado"));
+
+        Procedimiento procedimiento = procedimientoRepository.findById(entidad.getIdProcedimiento())
+                .orElseThrow(() -> new IllegalArgumentException("Procedimiento no encontrado"));
+
+        Programacion programacion = programacionConverter.toProgramacionEntity(entidad);
+        programacion.setId(id);
+        programacion.setMedico(medico);
+        programacion.setProcedimiento(procedimiento);
+        Programacion programacionEntity = iProgramacionRepository.save(programacion);
+        return programacionConverter.toProgramacionResponseDTO(programacionEntity);
+    }
+
 
     @Override
     public ProgramacionResponse updateProgramacion(Programacion programacion) {

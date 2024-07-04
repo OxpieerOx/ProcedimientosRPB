@@ -13,7 +13,13 @@ public interface IProgramacionService {
 
     List<Programacion> findByProcedimientoId(Long idProcedimiento);
 
+     Optional<Programacion> getbyId(Long idProgarmacion);
+
     ProgramacionResponse crear(ProgramacionRequest entidad);
+
+
+    void deleteById(Long id);
+    public ProgramacionResponse actualizar(Long id, ProgramacionRequest entidad);
 
     ProgramacionResponse updateProgramacion(Programacion programacion);
 }
