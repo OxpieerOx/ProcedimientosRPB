@@ -49,4 +49,9 @@ public class MedicoService implements IMedicoService {
     public List<Medico> findAll() {
         return medicoRepository.findAll();
     }
+
+    @Override
+    public List<Medico> findByServicioId(Long servicioId) {
+        return medicoRepository.findByServicioId(servicioId);
+    }
 }

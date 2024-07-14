@@ -17,4 +17,5 @@ public interface IMedicoService {
     Medico findById(Integer id);
 
     List<Medico> findAll();
+    List<Medico> findByServicioId(Long servicioId);
 }

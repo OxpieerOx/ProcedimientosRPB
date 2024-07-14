@@ -1,6 +1,6 @@
 package com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
@@ -17,10 +17,10 @@ public class Cita {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "idPaciente", nullable = false, length = 50)
-    private String idPaciente;
+    private Integer idPaciente;
 
     @Column(name = "nroCuenta", nullable = false, length = 20)
     private String nroCuenta;
@@ -38,8 +38,9 @@ public class Cita {
     @JoinColumn(name = "idProgramacion", nullable = false)
     private Programacion programacion;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 20)
-    private String estado;
+    private EstadoCita estado;
 
     @ManyToOne
     @JoinColumn(name = "idMedico", nullable = false)

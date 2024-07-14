@@ -23,6 +23,11 @@ public class MedicoController {
         return ResponseHandler.generateResponse(HttpStatus.OK, medicoService.findByUserId(id), true);
     }
 
+    @GetMapping("/servicio/{id}")
+    public ResponseEntity<Object> bucsarMedicoPorServicio(@PathVariable Long id) {
+        return ResponseHandler.generateResponse(HttpStatus.OK, medicoService.findByServicioId(id), true);
+    }
+
     @GetMapping()
     public ResponseEntity<Object> listAllMedicos() {
         return ResponseHandler.generateResponse(HttpStatus.OK, medicoService.findAll(), true);

@@ -25,9 +25,9 @@
             basePackages = { "com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository" }
     )
     public class ProcedimientosrpDataSourceConfig {
-    
+
         @Bean(name="procedimientosrpDataSource")
-        @ConfigurationProperties(prefix="spring.datasource")
+        @ConfigurationProperties(prefix="spring.datasource.procedimientosrp")
         public DataSource procedimientosrpDataSource() {
             return DataSourceBuilder.create().build();
         }

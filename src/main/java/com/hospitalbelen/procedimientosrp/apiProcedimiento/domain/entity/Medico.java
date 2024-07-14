@@ -1,4 +1,5 @@
 package com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,11 @@ public class Medico {
     private String telefono;
 
     private String email;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
 
     // Getters y Setters
 }

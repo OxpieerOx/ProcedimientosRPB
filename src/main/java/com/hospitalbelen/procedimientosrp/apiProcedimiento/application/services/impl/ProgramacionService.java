@@ -4,10 +4,12 @@ package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.ProgramacionRequest;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.ProgramacionResponse;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IProgramacionService;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.EstadoCita;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Medico;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Procedimiento;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Programacion;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.converter.ProgramacionConverter;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.ICitaRepository;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IMedicoRepository;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IProcedimientoRepository;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IProgramacionRepository;
@@ -22,13 +24,15 @@ public class ProgramacionService implements IProgramacionService {
 
     private final IProgramacionRepository iProgramacionRepository;
 
+    private final ICitaRepository citaRepository;
     private final IMedicoRepository medicoRepository;
     private final IProcedimientoRepository procedimientoRepository;
 
     private final ProgramacionConverter programacionConverter;
 
-    public ProgramacionService(IProgramacionRepository iProgramacionRepository, IMedicoRepository medicoRepository, IProcedimientoRepository procedimientoRepository, ProgramacionConverter programacionConverter) {
+    public ProgramacionService(IProgramacionRepository iProgramacionRepository, ICitaRepository citaRepository, IMedicoRepository medicoRepository, IProcedimientoRepository procedimientoRepository, ProgramacionConverter programacionConverter) {
         this.iProgramacionRepository = iProgramacionRepository;
+        this.citaRepository = citaRepository;
         this.medicoRepository = medicoRepository;
         this.procedimientoRepository = procedimientoRepository;
         this.programacionConverter = programacionConverter;
@@ -85,6 +89,17 @@ public class ProgramacionService implements IProgramacionService {
         long count = iProgramacionRepository.countByFechaAndProcedimientoIdExcludingId(entidad.getFecha(), entidad.getIdProcedimiento(), id);
         if (count > 0) {
             throw new IllegalArgumentException("Ya existe una programación para ese procedimiento en la fecha indicada.");
+        }
+
+        long citasPagadasCount = citaRepository.countByProgramacionIdAndEstado(id, EstadoCita.PAGADO);
+        if (citasPagadasCount > 0) {
+            throw new IllegalArgumentException("No se puede actualizar la programación ya que existen citas pagadas asociadas.");
+        }
+
+        // Verificar si existen citas adicionales en esta programación
+        long citasAdicionalesCount = citaRepository.countByProgramacionIdAndEsAdicionalTrue(id);
+        if (citasAdicionalesCount > 0) {
+            throw new IllegalArgumentException("No se puede actualizar la programación ya que existen citas adicionales asociadas.");
         }
         Medico medico = medicoRepository.findById(entidad.getIdMedico())
                 .orElseThrow(() -> new IllegalArgumentException("Medico no encontrado"));
