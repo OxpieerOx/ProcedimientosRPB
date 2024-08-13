@@ -1,5 +1,7 @@
 package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.impl;
 
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.CitaFinanciamientoDTO;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.CitaMesDTO;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.CitaRequestDTO;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.CitaResponseDTO;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.ICitaService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CitaService implements ICitaService {
@@ -66,11 +69,53 @@ public class CitaService implements ICitaService {
 
     @Override
     public CitaResponseDTO updateCita(int id, CitaRequestDTO citaRequest) {
-        return null;
+        Cita existingCita = citaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cita no encontrada con ID: " + id));
+
+        Programacion programacion = programacionRepository.findById(citaRequest.getIdProgramacion())
+                .orElseThrow(() -> new IllegalArgumentException("Programación no encontrada con ID: " + citaRequest.getIdProgramacion()));
+
+        existingCita.setProgramacion(programacion);
+        existingCita.setHoraInicio(citaRequest.getHoraInicio());
+        existingCita.setHoraFin(citaRequest.getHoraFin());
+        existingCita.setFecha(citaRequest.getFecha());
+
+        Cita updatedCita = citaRepository.save(existingCita);
+        return citaConverter.toCitaResponseDTO(updatedCita);
     }
+
+
 
     @Override
     public void deleteCita(int id) {
 
+    }
+
+
+
+    public List<CitaMesDTO> getCitasPorMes() {
+        List<Map<String, Object>> result = citaRepository.countCitasPorMes();
+        List<CitaMesDTO> citasPorMes = new ArrayList<>();
+
+        for (Map<String, Object> map : result) {
+            String mes = (String) map.get("mes");
+            Long cantidad = ((Number) map.get("cantidad")).longValue();
+            citasPorMes.add(new CitaMesDTO(mes, cantidad));
+        }
+
+        return citasPorMes;
+    }
+
+    public List<CitaFinanciamientoDTO> getCitasPorFinanciamiento() {
+        List<Map<String, Object>> result = citaRepository.countCitasPorFinanciamiento();
+        List<CitaFinanciamientoDTO> citasPorFinanciamiento = new ArrayList<>();
+
+        for (Map<String, Object> map : result) {
+            String tipoFinanciamiento = (String) map.get("tipoFinanciamiento");
+            Long cantidad = ((Number) map.get("cantidad")).longValue();
+            citasPorFinanciamiento.add(new CitaFinanciamientoDTO(tipoFinanciamiento, cantidad));
+        }
+
+        return citasPorFinanciamiento;
     }
 }

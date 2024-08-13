@@ -54,4 +54,8 @@ public class Cita {
 
     @Column(name = "esAdicional", nullable = false)
     private boolean esAdicional;
+
+    @Column(name = "financiamiento", nullable = false, length = 255)
+    private String financiamiento;
+
 }

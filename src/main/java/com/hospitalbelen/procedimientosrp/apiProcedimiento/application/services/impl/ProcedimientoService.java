@@ -1,5 +1,6 @@
 package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.impl;
 
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.ProcedimientoCitasDTO;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IProcedimientoService;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Procedimiento;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IProcedimientoRepository;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProcedimientoService implements IProcedimientoService {
@@ -30,6 +32,17 @@ public class ProcedimientoService implements IProcedimientoService {
     @Override
     public Procedimiento crearProcedimiento(Procedimiento procedimiento) {
         return procedimientoRepository.save(procedimiento);
+    }
+
+    public List<ProcedimientoCitasDTO> getCountCitasByProcedimiento() {
+        List<Object[]> results = procedimientoRepository.countCitasByProcedimiento();
+        return results.stream()
+                .map(result -> new ProcedimientoCitasDTO(
+                        (Long) result[0], // procedimientoId
+                        (String) result[1], // nombreProcedimiento
+                        ((Long) result[2]) // totalCitas
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override

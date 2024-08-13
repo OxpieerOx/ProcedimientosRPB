@@ -25,4 +25,5 @@ public class ProgramacionResponse {
     private Integer idMedico;
     private Long idProcedimiento;
 
+
 }

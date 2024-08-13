@@ -1,6 +1,7 @@
 package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.impl;
 
 
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.ProgramacionRangoRequest;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.ProgramacionRequest;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.ProgramacionResponse;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IProgramacionService;
@@ -16,6 +17,8 @@ import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repos
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +77,37 @@ public class ProgramacionService implements IProgramacionService {
 
     }
 
+    public List<Programacion> crearProgramacionesEnRango(ProgramacionRangoRequest request) {
+        List<Programacion> programaciones = new ArrayList<>();
+
+        // Validar y obtener el médico y procedimiento una vez fuera del bucle
+        Medico medico = medicoRepository.findById(request.getIdMedico())
+                .orElseThrow(() -> new IllegalArgumentException("Medico no encontrado"));
+
+        Procedimiento procedimiento = procedimientoRepository.findById(request.getIdProcedimiento())
+                .orElseThrow(() -> new IllegalArgumentException("Procedimiento no encontrado"));
+
+        for (LocalDate fecha : request.getFechas()) {
+            // Validar si ya existe una programación para esa fecha y procedimiento
+            if (iProgramacionRepository.countByFechaAndProcedimientoId(fecha, request.getIdProcedimiento()) > 0) {
+                continue; // Saltar esta fecha si ya existe una programación
+            }
+
+            Programacion nuevaProgramacion = new Programacion();
+            nuevaProgramacion.setFecha(fecha);
+            nuevaProgramacion.setHoraInicio(request.getHoraInicio());
+            nuevaProgramacion.setHoraFin(request.getHoraFin());
+            nuevaProgramacion.setTiempoPromedio(request.getTiempoPromedio());
+            nuevaProgramacion.setFechaRegistro(LocalDateTime.now());
+            nuevaProgramacion.setUsuarioCreador(request.getUsuarioCreador());
+            nuevaProgramacion.setMedico(medico);
+            nuevaProgramacion.setProcedimiento(procedimiento);
+
+            programaciones.add(nuevaProgramacion);
+        }
+        return iProgramacionRepository.saveAll(programaciones);
+    }
+
     @Override
     public void deleteById(Long id) {
          iProgramacionRepository.deleteById(id);
@@ -82,27 +116,32 @@ public class ProgramacionService implements IProgramacionService {
 
     @Override
     public ProgramacionResponse actualizar(Long id, ProgramacionRequest entidad) {
-        if (!iProgramacionRepository.existsById(id)) {
-            throw new IllegalArgumentException("Programación no encontrada");
-        }
+        // Verificar si la programación existe
+        Programacion existingProgramacion = iProgramacionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Programación no encontrada"));
 
+        // Verificar si ya existe una programación con el mismo procedimiento y fecha, excluyendo la programación actual
         long count = iProgramacionRepository.countByFechaAndProcedimientoIdExcludingId(entidad.getFecha(), entidad.getIdProcedimiento(), id);
         if (count > 0) {
             throw new IllegalArgumentException("Ya existe una programación para ese procedimiento en la fecha indicada.");
         }
 
+        // Verificar citas pagadas asociadas
         long citasPagadasCount = citaRepository.countByProgramacionIdAndEstado(id, EstadoCita.PAGADO);
-        if (citasPagadasCount > 0) {
-            throw new IllegalArgumentException("No se puede actualizar la programación ya que existen citas pagadas asociadas.");
+        long citasAdicionalesCount = citaRepository.countByProgramacionIdAndEsAdicionalTrue(id);
+
+        // Si existen citas pagadas o adicionales, solo permitir cambiar el médico
+        if ((citasPagadasCount > 0 || citasAdicionalesCount > 0) &&
+                (!entidad.getHoraInicio().equals(existingProgramacion.getHoraInicio()) ||
+                        !entidad.getHoraFin().equals(existingProgramacion.getHoraFin()) ||
+                        !entidad.getTiempoPromedio().equals(existingProgramacion.getTiempoPromedio()) ||
+                        !entidad.getFecha().equals(existingProgramacion.getFecha()) ||
+                        !entidad.getIdProcedimiento().equals(existingProgramacion.getProcedimiento().getId()))) {
+            throw new IllegalArgumentException("No se puede actualizar la programación ya que existen citas pagadas o adicionales asociadas y solo se permite cambiar el médico.");
         }
 
-        // Verificar si existen citas adicionales en esta programación
-        long citasAdicionalesCount = citaRepository.countByProgramacionIdAndEsAdicionalTrue(id);
-        if (citasAdicionalesCount > 0) {
-            throw new IllegalArgumentException("No se puede actualizar la programación ya que existen citas adicionales asociadas.");
-        }
         Medico medico = medicoRepository.findById(entidad.getIdMedico())
-                .orElseThrow(() -> new IllegalArgumentException("Medico no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Médico no encontrado"));
 
         Procedimiento procedimiento = procedimientoRepository.findById(entidad.getIdProcedimiento())
                 .orElseThrow(() -> new IllegalArgumentException("Procedimiento no encontrado"));
@@ -111,10 +150,17 @@ public class ProgramacionService implements IProgramacionService {
         programacion.setId(id);
         programacion.setMedico(medico);
         programacion.setProcedimiento(procedimiento);
+
         Programacion programacionEntity = iProgramacionRepository.save(programacion);
         return programacionConverter.toProgramacionResponseDTO(programacionEntity);
     }
 
+    private Integer getCurrentMedicoId(Long id) {
+        return iProgramacionRepository.findById(id)
+                .map(Programacion::getMedico)
+                .map(Medico::getId)
+                .orElseThrow(() -> new IllegalArgumentException("Médico no encontrado en la programación"));
+    }
 
     @Override
     public ProgramacionResponse updateProgramacion(Programacion programacion) {

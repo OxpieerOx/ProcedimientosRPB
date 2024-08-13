@@ -22,4 +22,5 @@ public class CitaResponseDTO {
     private String usuarioCreador;
     private boolean esAdicional;
     private EstadoCita estado;
+    private String financiamiento;
 }

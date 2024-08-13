@@ -24,4 +24,5 @@
         private int idMedico;
         private String usuarioCreador;
         private boolean esAdicional;
+        private String financiamiento;
     }

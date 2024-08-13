@@ -25,7 +25,8 @@ public class CitaConverter {
                 entity.getMedico().getId(),
                 entity.getUsuarioCreador(),
                 entity.isEsAdicional(),
-                entity.getEstado() // Devolver EstadoCita directamente
+                entity.getEstado(), // Devolver EstadoCita directamente
+                entity.getFinanciamiento() // Incluir el campo financiamiento
         );
     }
 
@@ -40,6 +41,7 @@ public class CitaConverter {
         entity.setUsuarioCreador(dto.getUsuarioCreador());
         entity.setFechaRegistro(LocalDateTime.now()); // Establecer la marca de tiempo actual o manejarla según los requisitos
         entity.setEsAdicional(dto.isEsAdicional());
+        entity.setFinanciamiento(dto.getFinanciamiento()); // Establecer el campo financiamiento
         return entity;
     }
 }

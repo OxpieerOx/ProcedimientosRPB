@@ -1,9 +1,11 @@
 package com.hospitalbelen.procedimientosrp.apiProcedimiento.api;
 
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.LoginRequest;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.ProgramacionRangoRequest;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.ProgramacionRequest;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.ProgramacionResponse;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IProgramacionService;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.impl.ProgramacionService;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Programacion;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.handler.ResponseHandler;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IProgramacionRepository;
@@ -24,6 +26,8 @@ import java.util.Optional;
 public class ProgramacionController {
 
     private final IProgramacionService iProgramacionService;
+
+    private final ProgramacionService programacionService;
 
         @PostMapping()
         public ResponseEntity<Object> createProgramacion(@Valid @RequestBody ProgramacionRequest request)
@@ -66,4 +70,8 @@ public class ProgramacionController {
     }
 
 
+    @PostMapping("/fechas")
+    public ResponseEntity<Object> buscarPorProcedimiento(@RequestBody ProgramacionRangoRequest request)  {
+        return ResponseHandler.generateResponse(HttpStatus.OK, programacionService.crearProgramacionesEnRango(request),true);
+    }
 }
