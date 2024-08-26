@@ -10,6 +10,8 @@ public interface IProcedimientoService {
 
     Procedimiento obtenerProcedimientoPorId(Long id);
     Procedimiento crearProcedimiento(Procedimiento procedimiento);
+
+    Procedimiento obtenerProcedimientoPorNombre(String nombre);
     Procedimiento actualizarProcedimiento(Long id, Procedimiento procedimiento);
     void eliminarProcedimiento(Long id);
 

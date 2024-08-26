@@ -58,4 +58,7 @@ public class Cita {
     @Column(name = "financiamiento", nullable = false, length = 255)
     private String financiamiento;
 
+    @ManyToOne
+    @JoinColumn(name = "idProcedimiento", nullable = true)  // nullable = true indica que es opcional
+    private Procedimiento procedimiento;
 }

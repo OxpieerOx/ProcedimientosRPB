@@ -38,4 +38,9 @@ public class ProcedimientoController {
     public ResponseEntity<Object> getCountCitasByProcedimiento() {
         return ResponseHandler.generateResponse(HttpStatus.OK, procedimientoService2.getCountCitasByProcedimiento(), true);
     }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<Object> buscarPorNombre(@PathVariable String nombre) {
+        return ResponseHandler.generateResponse(HttpStatus.OK, procedimientoService.obtenerProcedimientoPorNombre(nombre), true);
+    }
 }

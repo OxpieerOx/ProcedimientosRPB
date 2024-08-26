@@ -20,6 +20,7 @@
         private LocalTime horaInicio;
         private LocalTime horaFin;
         private Long idProgramacion;
+        private Long idProcedimiento;
         private EstadoCita estado;
         private int idMedico;
         private String usuarioCreador;

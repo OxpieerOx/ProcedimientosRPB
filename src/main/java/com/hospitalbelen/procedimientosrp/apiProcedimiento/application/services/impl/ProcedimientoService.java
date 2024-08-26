@@ -6,8 +6,7 @@ import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Procedi
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IProcedimientoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,16 +33,50 @@ public class ProcedimientoService implements IProcedimientoService {
         return procedimientoRepository.save(procedimiento);
     }
 
-    public List<ProcedimientoCitasDTO> getCountCitasByProcedimiento() {
-        List<Object[]> results = procedimientoRepository.countCitasByProcedimiento();
-        return results.stream()
-                .map(result -> new ProcedimientoCitasDTO(
-                        (Long) result[0], // procedimientoId
-                        (String) result[1], // nombreProcedimiento
-                        ((Long) result[2]) // totalCitas
-                ))
-                .collect(Collectors.toList());
+    @Override
+    public Procedimiento obtenerProcedimientoPorNombre(String nombre) {
+        return procedimientoRepository.findByNombre(nombre);
     }
+
+    public List<ProcedimientoCitasDTO> getCountCitasByProcedimiento() {
+        List<Object[]> citasProgramacion = procedimientoRepository.countCitasByProcedimientoInProgramacion();
+        List<Object[]> citasCita = procedimientoRepository.countCitasByProcedimientoInCita();
+
+        Map<Long, ProcedimientoCitasDTO> resultMap = new HashMap<>();
+
+        // Procesar citas de Programacion
+        for (Object[] result : citasProgramacion) {
+            Long procedimientoId = (Long) result[0];
+            String nombreProcedimiento = (String) result[1];
+            Long totalCitas = (Long) result[2];
+
+            // Filtrar el procedimiento con nombre "General"
+            if (!"General".equalsIgnoreCase(nombreProcedimiento)) {
+                resultMap.put(procedimientoId, new ProcedimientoCitasDTO(procedimientoId, nombreProcedimiento, totalCitas));
+            }
+        }
+
+        // Procesar citas directas de Cita
+        for (Object[] result : citasCita) {
+            Long procedimientoId = (Long) result[0];
+            String nombreProcedimiento = (String) result[1];
+            Long totalCitas = (Long) result[2];
+
+            // Filtrar el procedimiento con nombre "General"
+            if (!"General".equalsIgnoreCase(nombreProcedimiento)) {
+                if (resultMap.containsKey(procedimientoId)) {
+                    ProcedimientoCitasDTO dto = resultMap.get(procedimientoId);
+                    dto.setTotalCitas(dto.getTotalCitas() + totalCitas);
+                } else {
+                    resultMap.put(procedimientoId, new ProcedimientoCitasDTO(procedimientoId, nombreProcedimiento, totalCitas));
+                }
+            }
+        }
+
+        return new ArrayList<>(resultMap.values());
+    }
+
+
 
     @Override
     public Procedimiento actualizarProcedimiento(Long id, Procedimiento procedimiento) {
