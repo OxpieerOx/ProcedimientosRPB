@@ -21,7 +21,7 @@ public interface IProcedimientoRepository extends JpaRepository<Procedimiento, L
             "COALESCE(c.procedimiento.nombre, p.nombre) AS nombreProcedimiento, " +
             "COUNT(c) AS totalCitas " +
             "FROM Cita c " +
-            "LEFT JOIN c.programa   cion prog " +
+            "LEFT JOIN c.programacion prog " +
             "LEFT JOIN prog.procedimiento p " +
             "GROUP BY COALESCE(c.procedimiento.id, p.id), COALESCE(c.procedimiento.nombre, p.nombre)")
     List<Object[]> countCitasByProcedimientoInProgramacion();
