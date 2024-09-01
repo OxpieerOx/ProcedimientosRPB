@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   sqlserver-procedimientos:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -51,6 +53,14 @@ services:
       - "8081:8080"
     depends_on:
       - sqlserver-procedimientos
+    networks:
+      - app-network
+
+  frontend:
+    image: plantilla-login:latest
+    container_name: frontend
+    ports:
+      - "80:80"
     networks:
       - app-network
 

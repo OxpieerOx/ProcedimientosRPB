@@ -48,7 +48,7 @@ public class SecurityConfig   {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:4200"); // Permitir solicitudes desde el origen de tu aplicación frontend
+        config.addAllowedOrigin("*"); // Permitir solicitudes desde el origen de tu aplicación frontend
         config.addAllowedMethod("*"); // Permitir cualquier método (GET, POST, etc.)
         config.addAllowedHeader("*"); // Permitir cualquier encabezado
         source.registerCorsConfiguration("/**", config);
