@@ -5,10 +5,7 @@ import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.reque
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.ProgramacionRequest;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.ProgramacionResponse;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IProgramacionService;
-import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.EstadoCita;
-import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Medico;
-import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Procedimiento;
-import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Programacion;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.*;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.converter.ProgramacionConverter;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.ICitaRepository;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repository.IMedicoRepository;
@@ -59,6 +56,10 @@ public class ProgramacionService implements IProgramacionService {
 
     @Override
     public ProgramacionResponse crear(ProgramacionRequest entidad) {
+        LocalDate fecha = entidad.getFecha();
+
+        // Imprimir la fecha en consola
+        System.out.println("Fecha de la programación: " + fecha);
         if (iProgramacionRepository.countByFechaAndProcedimientoId(entidad.getFecha(), entidad.getIdProcedimiento()) > 0) {
             throw new IllegalArgumentException("Ya existe una programación para ese procedimiento en la fecha indicada.");
         }
@@ -140,11 +141,26 @@ public class ProgramacionService implements IProgramacionService {
             throw new IllegalArgumentException("No se puede actualizar la programación ya que existen citas pagadas o adicionales asociadas y solo se permite cambiar el médico.");
         }
 
+        boolean medicoCambiado = !entidad.getIdMedico().equals(existingProgramacion.getMedico().getId());
+        Medico nuevoMedico = medicoRepository.findById(entidad.getIdMedico())
+                .orElseThrow(() -> new IllegalArgumentException("Médico no encontrado"));
+
         Medico medico = medicoRepository.findById(entidad.getIdMedico())
                 .orElseThrow(() -> new IllegalArgumentException("Médico no encontrado"));
 
         Procedimiento procedimiento = procedimientoRepository.findById(entidad.getIdProcedimiento())
                 .orElseThrow(() -> new IllegalArgumentException("Procedimiento no encontrado"));
+
+        Integer idNuevoInteger = (int) (long) id;
+        // Actualizar las citas si el médico cambió
+        if (medicoCambiado) {
+            List<Cita> citasPorActualizar = citaRepository.findByProgramacionId(idNuevoInteger);
+            for (Cita cita : citasPorActualizar) {
+                // Actualizar el médico en las citas
+                cita.setMedico(nuevoMedico);
+                citaRepository.save(cita);
+            }
+        }
 
         Programacion programacion = programacionConverter.toProgramacionEntity(entidad);
         programacion.setId(id);

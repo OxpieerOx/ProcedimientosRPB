@@ -5,6 +5,7 @@ import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.reque
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.response.CitaMedicoProcedimientoResponse;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.ICitaService;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.impl.CitaService;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Cita;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.handler.ResponseHandler;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.utils.constant.ProcedimientoConstant;
 import jakarta.validation.Valid;
@@ -60,4 +61,16 @@ public class CitaController {
     public ResponseEntity<Object> obtenerCitasPorMedicoYProcedimiento() {
         return ResponseHandler.generateResponse(HttpStatus.OK, citaServiceimp.getCitasCountByMedicoAndProcedimiento(), true);
     }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<Object> filtrarCitas(
+            @RequestParam(required = false) String idMedico,
+            @RequestParam(required = false) String fecha, // Ajustar el formato de fecha si es necesario
+            @RequestParam(required = false) Integer idPaciente,
+            @RequestParam(required = false) String nroCuenta
+    ) {
+        List<Cita> citasFiltradas = citaServiceimp.filtrarCitas(idMedico, fecha, idPaciente, nroCuenta);
+        return ResponseHandler.generateResponse(HttpStatus.OK, citasFiltradas, true);
+    }
+
 }

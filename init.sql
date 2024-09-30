@@ -25,6 +25,7 @@ CREATE TABLE [dbo].[cita](
 	[esAdicional] [bit] NOT NULL,
 	[financiamiento] [nvarchar](255) NULL,
 	[idProcedimiento] [int] NULL,
+	[diagnostico] [nvarchar](max) NULL,
 PRIMARY KEY CLUSTERED
 (
 	[id] ASC

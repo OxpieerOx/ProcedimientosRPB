@@ -19,6 +19,7 @@ import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.repos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,11 +90,17 @@ public class CitaService implements ICitaService {
         Programacion programacion = programacionRepository.findById(citaRequest.getIdProgramacion())
                 .orElseThrow(() -> new IllegalArgumentException("Programación no encontrada con ID: " + citaRequest.getIdProgramacion()));
 
+        // Verificar que la nueva fecha no sea anterior a la fecha existente
+        if (citaRequest.getFecha().isBefore(existingCita.getFecha())) {
+            throw new IllegalArgumentException("La nueva fecha de la cita no puede ser anterior a la fecha de la cita existente.");
+        }
+
         existingCita.setProgramacion(programacion);
         existingCita.setHoraInicio(citaRequest.getHoraInicio());
         existingCita.setHoraFin(citaRequest.getHoraFin());
         existingCita.setFecha(citaRequest.getFecha());
-
+        existingCita.setEstado(citaRequest.getEstado());
+        existingCita.setInformeDiagnostico(citaRequest.getInformeDiagnostico());
         Cita updatedCita = citaRepository.save(existingCita);
         return citaConverter.toCitaResponseDTO(updatedCita);
     }
@@ -167,4 +174,14 @@ public class CitaService implements ICitaService {
 
         return result;
     }
+
+    public List<Cita> filtrarCitas(String username, String fecha, Integer idPaciente, String nroCuenta) {
+        LocalDate localDate = null;
+        if (fecha != null && !fecha.isEmpty()) {
+            localDate = LocalDate.parse(fecha); // Conversión de fecha a LocalDate
+        }
+
+        return citaRepository.filtrarCitas(username, localDate, idPaciente, nroCuenta);
+    }
+
 }

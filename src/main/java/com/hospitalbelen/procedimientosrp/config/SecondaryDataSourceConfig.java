@@ -16,7 +16,9 @@ public class SecondaryDataSourceConfig {
     @Bean
     public JdbcTemplate jdbcTemplate() throws IllegalAccessException, InvocationTargetException, InstantiationException {
         final String driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        final String jdbcUrl = "jdbc:sqlserver://host.docker.internal:1433;databaseName=SIGH;encrypt=false;trustServerCertificate=true;sslProtocol=TLSv1.2";
+
+        final String jdbcUrl = "jdbc:sqlserver://LAPTOP-IGDIRBID:1433;databaseName=SIGH;encrypt=false;trustServerCertificate=true";
+        System.out.println("jdbcUrl: " + jdbcUrl);
         final String username = "sa";
         final String password = "123456";
 

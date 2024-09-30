@@ -55,6 +55,8 @@ services:
       - sqlserver-procedimientos
     networks:
       - app-network
+    extra_hosts:
+      - "host.docker.internal:192.168.2.12"
 
   frontend:
     image: plantilla-login:latest

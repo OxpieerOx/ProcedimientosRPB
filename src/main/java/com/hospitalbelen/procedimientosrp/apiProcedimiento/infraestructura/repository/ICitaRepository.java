@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,18 @@ public interface ICitaRepository extends JpaRepository<Cita, Integer> {
             "GROUP BY YEAR(c.fecha), MONTH(c.fecha), m.nombre, p_proc.nombre",
             nativeQuery = true)
     List<Map<String, Object>> countCitasConProcedimientoNotNull();
+
+    @Query("SELECT c FROM Cita c WHERE " +
+            "(:username IS NULL OR c.medico.user.username = :username) AND " +
+            "(:fecha IS NULL OR c.fecha = :fecha) AND " +
+            "(:idPaciente IS NULL OR c.idPaciente = :idPaciente) AND " +
+            "(:nroCuenta IS NULL OR c.nroCuenta = :nroCuenta)")
+    List<Cita> filtrarCitas(
+            @Param("username") String username,   // Ahora filtra por username
+            @Param("fecha") LocalDate fecha,
+            @Param("idPaciente") Integer idPaciente,
+            @Param("nroCuenta") String nroCuenta
+    );
 
 
 }

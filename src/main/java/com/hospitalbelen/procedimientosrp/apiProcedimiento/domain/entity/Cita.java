@@ -61,4 +61,8 @@ public class Cita {
     @ManyToOne
     @JoinColumn(name = "idProcedimiento", nullable = true)  // nullable = true indica que es opcional
     private Procedimiento procedimiento;
+
+
+    @Column(name = "diagnostico", nullable = true, columnDefinition = "TEXT")
+    private String informeDiagnostico;
 }

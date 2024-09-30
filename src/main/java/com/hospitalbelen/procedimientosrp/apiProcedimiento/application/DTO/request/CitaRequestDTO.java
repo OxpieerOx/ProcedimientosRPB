@@ -26,4 +26,5 @@
         private String usuarioCreador;
         private boolean esAdicional;
         private String financiamiento;
+        private String informeDiagnostico;
     }
