@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -150,6 +151,7 @@ public class CitaService implements ICitaService {
                 .map(result -> new CitaMedicoProcedimientoResponse(
                         (String) result.get("medicoNombre"),
                         (String) result.get("procedimientoNombre"),
+                        (String) result.get("servicioNombre"), // Agregar servicio
                         (Integer) result.get("año"),
                         (Integer) result.get("mes"),
                         ((Number) result.get("cantidad")).longValue()
@@ -161,6 +163,7 @@ public class CitaService implements ICitaService {
                 .map(result -> new CitaMedicoProcedimientoResponse(
                         (String) result.get("medicoNombre"),
                         (String) result.get("procedimientoNombre"),
+                        (String) result.get("servicioNombre"), // Agregar servicio
                         (Integer) result.get("año"),
                         (Integer) result.get("mes"),
                         ((Number) result.get("cantidad")).longValue()
@@ -172,8 +175,13 @@ public class CitaService implements ICitaService {
         result.addAll(citasNull);
         result.addAll(citasNotNull);
 
+        // Ordenar por año y mes
+        result.sort(Comparator.comparing(CitaMedicoProcedimientoResponse::getAño)
+                .thenComparing(CitaMedicoProcedimientoResponse::getMes));
+
         return result;
     }
+
 
     public List<Cita> filtrarCitas(String username, String fecha, Integer idPaciente, String nroCuenta) {
         LocalDate localDate = null;

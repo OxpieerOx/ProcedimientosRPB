@@ -35,28 +35,34 @@ public interface ICitaRepository extends JpaRepository<Cita, Integer> {
             "MONTH(c.fecha) AS mes, " +
             "m.nombre AS medicoNombre, " +
             "p_proc.nombre AS procedimientoNombre, " +
+            "s.nombre AS servicioNombre, " + // Agregar servicio
             "COUNT(*) AS cantidad " +
             "FROM cita c " +
             "LEFT JOIN programacion p ON c.idProgramacion = p.id " +
             "LEFT JOIN procedimiento p_proc ON p.id_procedimiento = p_proc.id " +
             "LEFT JOIN medico m ON c.idMedico = m.id " +
+            "LEFT JOIN servicio s ON p_proc.id_servicio = s.id " + // JOIN con servicio
             "WHERE c.idProcedimiento IS NULL " +
-            "GROUP BY YEAR(c.fecha), MONTH(c.fecha), m.nombre, p_proc.nombre",
+            "GROUP BY YEAR(c.fecha), MONTH(c.fecha), m.nombre, p_proc.nombre, s.nombre", // Agregar servicio al GROUP BY
             nativeQuery = true)
     List<Map<String, Object>> countCitasConProcedimientoNull();
+
 
     @Query(value = "SELECT YEAR(c.fecha) AS año, " +
             "MONTH(c.fecha) AS mes, " +
             "m.nombre AS medicoNombre, " +
             "p_proc.nombre AS procedimientoNombre, " +
+            "s.nombre AS servicioNombre, " + // Agregar servicio
             "COUNT(*) AS cantidad " +
             "FROM cita c " +
             "LEFT JOIN procedimiento p_proc ON c.idProcedimiento = p_proc.id " +
             "LEFT JOIN medico m ON c.idMedico = m.id " +
+            "LEFT JOIN servicio s ON p_proc.id_servicio = s.id " + // JOIN con servicio
             "WHERE c.idProcedimiento IS NOT NULL " +
-            "GROUP BY YEAR(c.fecha), MONTH(c.fecha), m.nombre, p_proc.nombre",
+            "GROUP BY YEAR(c.fecha), MONTH(c.fecha), m.nombre, p_proc.nombre, s.nombre", // Agregar servicio al GROUP BY
             nativeQuery = true)
     List<Map<String, Object>> countCitasConProcedimientoNotNull();
+
 
     @Query("SELECT c FROM Cita c WHERE " +
             "(:username IS NULL OR c.medico.user.username = :username) AND " +

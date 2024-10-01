@@ -8,7 +8,8 @@
     @Data
     public class CitaMedicoProcedimientoResponse {
         private String medicoNombre;             // Nombre del médico
-        private String procedimientoNombre;     // Nombre del procedimiento
+        private String procedimientoNombre;
+        private String servicioNombre;     // Nombre del procedimiento
         private Integer año;                    // Año extraído de la fecha de la cita
         private Integer mes;                    // Mes extraído de la fecha de la cita
         private Long cantidad;
