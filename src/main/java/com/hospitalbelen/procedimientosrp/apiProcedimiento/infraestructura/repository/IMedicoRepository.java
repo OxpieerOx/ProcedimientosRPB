@@ -22,4 +22,8 @@ public interface IMedicoRepository extends JpaRepository<Medico, Integer> {
             "WHERE s.id = :servicioId")
     List<Medico> findByServicioId(@Param("servicioId") Long servicioId);
 
+    @Query("SELECT m FROM Medico m " +
+            "JOIN m.user u " +
+            "LEFT JOIN u.roles r")
+    List<Medico> findAllMedicosWithRoles();
 }

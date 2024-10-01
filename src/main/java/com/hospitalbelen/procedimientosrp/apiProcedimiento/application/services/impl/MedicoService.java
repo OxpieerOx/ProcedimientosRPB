@@ -41,39 +41,42 @@ public class MedicoService implements IMedicoService {
 
     @Override
     public Medico saveMedico(MedicoRequestDTO medicoRequestDTO, List<Long> roleIds) {
-        // 1. Crear el Medico
+        // 1. Crear el User
+        String username = medicoRequestDTO.getNombre().charAt(0) + medicoRequestDTO.getApellido();
+        Optional<User> existingUserOptional = userRepository.findByUsername(username.toLowerCase());
+
+        User user = new User();
+        if (existingUserOptional.isPresent()) {
+            user = existingUserOptional.get();
+        } else {
+            user = new User();
+            user.setUsername(username.toLowerCase()); // Convertir a minúsculas
+            String password = passwordEncoder.encode("123456"); // Encriptar contraseña
+            user.setPassword(password);
+
+            // 2. Asignar roles recibidos
+            for (Long roleId : roleIds) {
+                Role role = roleRepository.findById(roleId)
+                        .orElseThrow(() -> new RuntimeException("Role not found for ID: " + roleId));
+                user.getRoles().add(role);
+            }
+
+            // Guardar el User
+            user = userRepository.save(user);
+        }
+
+        // 3. Crear el Medico
         Medico medico = new Medico();
         medico.setNombre(medicoRequestDTO.getNombre());
         medico.setApellido(medicoRequestDTO.getApellido());
         medico.setTelefono(medicoRequestDTO.getTelefono());
         medico.setEmail(medicoRequestDTO.getEmail());
+        medico.setUserId(user.getId()); // Asignar el ID del User
 
-        // Guardar el Medico primero para obtener su ID
-        Medico savedMedico = medicoRepository.save(medico);
-
-        // 2. Crear el User
-        User user = new User();
-        String username = medicoRequestDTO.getNombre().charAt(0) + medicoRequestDTO.getApellido();
-        user.setUsername(username.toLowerCase()); // Convertir a minúsculas
-        String password = passwordEncoder.encode("123456"); // Encriptar contraseña
-        user.setPassword(password);
-
-        // 3. Asignar roles recibidos
-        for (Long roleId : roleIds) {
-            Role role = roleRepository.findById(roleId)
-                    .orElseThrow(() -> new RuntimeException("Role not found for ID: " + roleId));
-            user.getRoles().add(role);
-        }
-
-        // Guardar el User
-        User savedUser = userRepository.save(user);
-
-        // 4. Actualizar el Medico con el ID del User
-        savedMedico.setUserId(savedUser.getId());
-
-        // Guardar el Medico nuevamente para asociarlo con el User
-        return medicoRepository.save(savedMedico);
+        // Guardar el Medico
+        return medicoRepository.save(medico);
     }
+
 
     @Override
     public Medico updateMedico(MedicoRequestDTO medicoRequestDTO, Integer medicoId, List<Long> roleIds) {
@@ -111,6 +114,10 @@ public class MedicoService implements IMedicoService {
     @Override
     public void deleteMedico(Integer id) {
         medicoRepository.deleteById(id);
+    }
+
+    public List<Medico> findAllMedicosWithRoles() {
+        return medicoRepository.findAllMedicosWithRoles();
     }
 
     @Override

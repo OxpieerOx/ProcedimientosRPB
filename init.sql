@@ -230,10 +230,6 @@ GO
 -- Insertar datos en la tabla usuario
 SET IDENTITY_INSERT [dbo].[usuario] ON
 GO
-INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (1, N'usuario1', N'$2a$12$6oWePbONlLit9BaQEG6fxesj7wnuLMPro5UrxT/TAcvYpmo6ZT3iC')
-GO
-INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (2, N'usuario5', N'$2a$12$EOY9pWxE8LorFjG.n45eoOI5HXesD7oiU5JE5dWOk.gpnbQEkrDF6')
-GO
 INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (3, N'admision', N'$2a$12$tx2bPe62LJw4W93yV86zy.i.EF6HzhOiG4O0iskCWM89tVjarMdRK')
 GO
 INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (1003, N'medicog', N'$2a$12$blNS7.2IMsi1YNpmBhbSyeBskqUPg.GZvPrpMZ1SGmwSuFAD7Wji6')
@@ -246,10 +242,6 @@ GO
 -- Insertar datos en la tabla medico
 SET IDENTITY_INSERT [dbo].[medico] ON
 GO
-INSERT [dbo].[medico] ([id], [id_user], [nombre], [apellido], [telefono], [email]) VALUES (1, 1, N'John', N'Jones', N'555-1234', N'doc_jones@example.com')
-GO
-INSERT [dbo].[medico] ([id], [id_user], [nombre], [apellido], [telefono], [email]) VALUES (3, 2, N'Medico Cardiologo', N'Rodas', N'956557298', N'pie123@example.com')
-GO
 INSERT [dbo].[medico] ([id], [id_user], [nombre], [apellido], [telefono], [email]) VALUES (1003, 1003, N'Medico Gastroenterologo', N'Gastroenterólogo', N'95682312', N'example@example.com')
 GO
 INSERT [dbo].[medico] ([id], [id_user], [nombre], [apellido], [telefono], [email]) VALUES (1004, 1004, N'Medico Dermatologia', N'Dermatologia', N'123456789', N'medicog@example.com')
@@ -259,14 +251,6 @@ GO
 
 -- Insertar datos en la tabla rol
 SET IDENTITY_INSERT [dbo].[rol] ON
-GO
-INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (1, N'Admin', N'ADMIN')
-GO
-INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (2, N'Admision', N'ADMISION')
-GO
-INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (3, N'Medico', N'MEDICO')
-GO
-INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (4, N'Medico Cardialogo', N'MEDICO')
 GO
 INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (5, N'Admisionista', N'ADMISION')
 GO
@@ -279,12 +263,6 @@ GO
 
 
 -- Insertar datos en la tabla UsuarioRol
-INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (1, 1)
-GO
-INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (1, 2)
-GO
-INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (2, 4)
-GO
 INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (3, 5)
 GO
 INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (1003, 1004)
@@ -309,41 +287,59 @@ SET IDENTITY_INSERT [dbo].[servicio] OFF
 GO
 
 -- Insertar datos en la tabla RoleServicio
-INSERT [dbo].[RoleServicio] ([roleId], [servicioId]) VALUES (1, 1)
-GO
-INSERT [dbo].[RoleServicio] ([roleId], [servicioId]) VALUES (2, 2)
-GO
-INSERT [dbo].[RoleServicio] ([roleId], [servicioId]) VALUES (4, 1)
-GO
 INSERT [dbo].[RoleServicio] ([roleId], [servicioId]) VALUES (1004, 3)
 GO
 INSERT [dbo].[RoleServicio] ([roleId], [servicioId]) VALUES (1005, 4)
 GO
 
--- Insertar datos en la tabla procedimiento
 SET IDENTITY_INSERT [dbo].[procedimiento] ON
 GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1002, N'ecocardiograma traxtoraxica', 1, N'93306')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1003, N'monitoreo holter', 1, N'93224')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1004, N'Electrocardiograma', 1, N'93000')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1005, N'Endoscopia gastrointestinal alta', 3, N'43235')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1006, N'Biopsia de lesión de estómago', 3, N'43239')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1007, N'Ligadura de várices esofágicas', 3, N'91148')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1008, N'Escleroterapia de várices esofágicas con esofagoscopia', 3, N'43204')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1009, N'Proctosigmoidoscopia', 3, N'45300')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1010, N'Colonoscopia diagnóstica flexible', 3, N'45378')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1011, N'Colonoscopia con biopsia', 3, N'45380')
-GO
 INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1012, N'Colocación de Sonda Nasoyeyunal', 3, N'45381')
-GO
-SET IDENTITY_INSERT [dbo].[procedimiento] OFF
-GO
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1013, N'Extracción de cuerpo extraño', 3, N'91144')
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1014, N'Hemostasia endoscópica alta', 3, N'91154')
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1015, N'Videocolonoscopia izquierda', 3, N'45359')
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1016, N'Polipectomia alta con videoendoscopio', 3, N'91142')
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1017, N'Paracentesis diagnóstica', 3, N'49080')
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1018, N'Paracentesis terapéutica', 3, N'91212')
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1019, N'Kit de material médico para ligar varices esofágicas', 3, N'26317')
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1020, N'CRIO TERAPIA', 4, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1021, N'BIOPSIA DE PIEL', 4, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1022, N'ELECTRO CAUTERIZACIÓN', 4, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1023, N'INFILTRACIÓN INTRALESIONAL', 4, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1024, N'EXTRACCIÓN DE UNAS', 4, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1025, N'RETIRO DE PUNTOS', 4, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1026, N'EXTIRPACIÓN QUISTES', 4, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1027, N'General', 3, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1028, N'Microscopia binocular', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1029, N'endoscopia nasal', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1030, N'endoscopia faringolaringe', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1031, N'laringoscopia', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1032, N'reducción de fracturas nasales', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1033, N'drenaje de accesos O.N.G', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1034, N'retiro de cuerpos extraños O.N.G', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1035, N'Drenaje de hematomas', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1036, N'infiltracion intratimpanica', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1037, N'colección y retiro de tubo de ventilacion', 2, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1038, N'TEST NO ESTRESANTE', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1039, N'ECOGRAFIA FETAL DOPPLER', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1040, N'ECOGRAFIA OBSTETRICA SELECTIVA - EVALUACION MORFOLOGICA DEL FETO PARA DESCARTE DE MALFORMACIONES', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1041, N'ULTRASONIDO DE UTERO GRAVIDO EN EL PRIMER TRIMESTRE', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1042, N'ECOGRAFIA TRANSVAGINAL OBSTETRICA', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1043, N'ULTRASONIDO DE UTERO GRAVIDO, POSTERIOR AL 1ER TRIMESTRE', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1044, N'PERFIL BIOFISICO FETAL SIN TEST NO ESTRESANTE', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1045, N'ECOGRAFIA PELVICA', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1046, N'ECOGRAFIA TRANSVAGINAL (NO OBSTETRICA)', 5, NULL)
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1047, N'HISTEROSONOGRAFIA, CON
+INSERT [dbo].[procedimiento] ([id], [nombre], [id_servicio], [codigo]) VALUES (1048, N'General', 2, NULL)
+
+

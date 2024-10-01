@@ -2,6 +2,7 @@ package com.hospitalbelen.procedimientosrp.apiProcedimiento.api;
 
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.MedicoRequestDTO;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.IMedicoService;
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services.impl.MedicoService;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.handler.ResponseHandler;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.infraestructura.utils.constant.ProcedimientoConstant;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import java.util.List;
 public class MedicoController {
 
     private final IMedicoService medicoService;
+
+    private final MedicoService medicoServiceImpl;
 
     @GetMapping("/findByUserId/{id}")
     public ResponseEntity<Object> buscarSericiosporUsuario(@PathVariable Integer id) {
@@ -46,5 +49,10 @@ public class MedicoController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateMedico(@PathVariable Integer id, @RequestBody MedicoRequestDTO medicoRequestDTO, @RequestParam List<Long> roleIds) {
         return ResponseHandler.generateResponse(HttpStatus.OK, medicoService.updateMedico(medicoRequestDTO, id, roleIds), true);
+    }
+
+    @GetMapping("/findAllWithRol")
+    public ResponseEntity<Object> listarMedicosConRoles() {
+        return ResponseHandler.generateResponse(HttpStatus.OK, medicoServiceImpl.findAllMedicosWithRoles(), true);
     }
 }
