@@ -22,4 +22,9 @@ public class RolController {
     public ResponseEntity<Object> buscarSericiosporUsuario(@PathVariable String username) {
         return ResponseHandler.generateResponse(HttpStatus.OK, rolService.findRolesByUsername(username), true);
     }
+
+    @GetMapping("/codigo/{codigo}")
+    public ResponseEntity<Object> buscarRolesporCodigo(@PathVariable String codigo) {
+        return ResponseHandler.generateResponse(HttpStatus.OK, rolService.findRolesByCodigo(codigo), true);
+    }
 }
