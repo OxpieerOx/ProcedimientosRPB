@@ -232,6 +232,8 @@ SET IDENTITY_INSERT [dbo].[usuario] ON
 GO
 INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (3, N'admision', N'$2a$12$tx2bPe62LJw4W93yV86zy.i.EF6HzhOiG4O0iskCWM89tVjarMdRK')
 GO
+INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (1, N'administrador', N'$2a$12$tx2bPe62LJw4W93yV86zy.i.EF6HzhOiG4O0iskCWM89tVjarMdRK')
+GO
 INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (1003, N'medicog', N'$2a$12$blNS7.2IMsi1YNpmBhbSyeBskqUPg.GZvPrpMZ1SGmwSuFAD7Wji6')
 GO
 INSERT [dbo].[usuario] ([id], [username], [password]) VALUES (1004, N'medicod', N'$2a$12$blNS7.2IMsi1YNpmBhbSyeBskqUPg.GZvPrpMZ1SGmwSuFAD7Wji6')
@@ -258,11 +260,15 @@ INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (1004, N'Medico Gastroenter
 GO
 INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (1005, N'Medico Dermatologo', N'MEDICO')
 GO
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (1, N'Administrador', N'ADMIN')
+GO
 SET IDENTITY_INSERT [dbo].[rol] OFF
 GO
 
 
 -- Insertar datos en la tabla UsuarioRol
+INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (1, 1) -- Asignar rol ADMIN al usuario administrador
+GO
 INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (3, 5)
 GO
 INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (1003, 1004)
