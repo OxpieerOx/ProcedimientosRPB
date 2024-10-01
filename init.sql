@@ -115,6 +115,7 @@ GO
 CREATE TABLE [dbo].[rol](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[nombre] [nvarchar](50) NOT NULL,
+	[codigo] [nvarchar](50) NOT NULL,
 PRIMARY KEY CLUSTERED
 (
 	[id] ASC
@@ -259,22 +260,23 @@ GO
 -- Insertar datos en la tabla rol
 SET IDENTITY_INSERT [dbo].[rol] ON
 GO
-INSERT [dbo].[rol] ([id], [nombre]) VALUES (1, N'Admin')
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (1, N'Admin', N'ADMIN')
 GO
-INSERT [dbo].[rol] ([id], [nombre]) VALUES (2, N'Admision')
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (2, N'Admision', N'ADMISION')
 GO
-INSERT [dbo].[rol] ([id], [nombre]) VALUES (3, N'Medico')
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (3, N'Medico', N'MEDICO')
 GO
-INSERT [dbo].[rol] ([id], [nombre]) VALUES (4, N'Medico Cardialogo')
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (4, N'Medico Cardialogo', N'MEDICO')
 GO
-INSERT [dbo].[rol] ([id], [nombre]) VALUES (5, N'Admisionista')
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (5, N'Admisionista', N'ADMISION')
 GO
-INSERT [dbo].[rol] ([id], [nombre]) VALUES (1004, N'Medico Gastroenterelogo')
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (1004, N'Medico Gastroenterelogo', N'MEDICO')
 GO
-INSERT [dbo].[rol] ([id], [nombre]) VALUES (1005, N'medico dermatologo')
+INSERT [dbo].[rol] ([id], [nombre], [codigo]) VALUES (1005, N'Medico Dermatologo', N'MEDICO')
 GO
 SET IDENTITY_INSERT [dbo].[rol] OFF
 GO
+
 
 -- Insertar datos en la tabla UsuarioRol
 INSERT [dbo].[UsuarioRol] ([userId], [roleId]) VALUES (1, 1)

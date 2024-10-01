@@ -9,6 +9,7 @@ import java.util.List;
 @Service
 public class RoleService implements IRolService {
 
+
     private final IRoleRepository roleRepository;
 
     public RoleService(IRoleRepository roleRepository) {
@@ -19,4 +20,10 @@ public class RoleService implements IRolService {
     public List<Role> findRolesByUsername(String username) {
         return roleRepository.findRolesByUsername(username);
     }
+
+    @Override
+    public List<Role> findRolesByCodigo(String codigo) {
+        return roleRepository.findByCodigo(codigo);
+    }
+
 }

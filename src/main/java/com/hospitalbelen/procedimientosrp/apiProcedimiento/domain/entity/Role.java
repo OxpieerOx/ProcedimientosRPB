@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Id;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +32,8 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
+    @Column(name="codigo", nullable = false)
+    private String codigo;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
@@ -38,6 +41,7 @@ public class Role {
             joinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "servicioId", referencedColumnName = "id"))
     private Set<Servicio> services = new HashSet<>();
+
 
 
 }

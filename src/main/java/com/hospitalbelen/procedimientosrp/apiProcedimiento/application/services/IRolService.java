@@ -7,4 +7,6 @@ import java.util.List;
 public interface IRolService {
 
     List<Role> findRolesByUsername(String username);
+
+    List<Role> findRolesByCodigo(String codigo);
 }

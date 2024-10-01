@@ -1,5 +1,6 @@
 package com.hospitalbelen.procedimientosrp.apiProcedimiento.application.services;
 
+import com.hospitalbelen.procedimientosrp.apiProcedimiento.application.DTO.request.MedicoRequestDTO;
 import com.hospitalbelen.procedimientosrp.apiProcedimiento.domain.entity.Medico;
 
 import java.util.List;
@@ -8,9 +9,9 @@ public interface IMedicoService {
 
     Medico findByUserId(Integer userId);
 
-    Medico saveMedico(Medico medico);
+    Medico saveMedico(MedicoRequestDTO medico, List<Long> roleIds );
 
-    Medico updateMedico(Medico medico);
+    Medico updateMedico(MedicoRequestDTO medicoRequestDTO, Integer medicoId, List<Long> roleIds);
 
     void deleteMedico(Integer id);
 
