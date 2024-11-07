@@ -15,7 +15,8 @@ public interface IProgramacionRepository extends JpaRepository<Programacion, Lon
 
     Optional<Programacion> findByFechaAndProcedimientoId(LocalDate fecha, Long idProcedimiento);
     boolean existsById(Long id);
-    List<Programacion> findByProcedimientoId(Long idProcedimiento);
+    List<Programacion> findByProcedimientoIdOrderByFecha(Long idProcedimiento);
+
 
     @Query("SELECT COUNT(p) FROM Programacion p WHERE p.fecha = :fecha AND p.procedimiento.id = :idProcedimiento AND p.id <> :id")
     long countByFechaAndProcedimientoIdExcludingId(@Param("fecha") LocalDate fecha, @Param("idProcedimiento") Long idProcedimiento, @Param("id") Long id);

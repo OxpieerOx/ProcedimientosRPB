@@ -50,7 +50,7 @@ services:
       SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: "30000"
       SPRING_DATASOURCE_HIKARI_POOL_NAME: "HikariPoolOrcl"
     ports:
-      - "8081:8080"
+      - "8089:8080"
     depends_on:
       - sqlserver-procedimientos
     networks:

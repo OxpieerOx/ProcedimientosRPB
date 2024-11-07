@@ -43,4 +43,12 @@ public class ProcedimientoController {
     public ResponseEntity<Object> buscarPorNombre(@PathVariable String nombre) {
         return ResponseHandler.generateResponse(HttpStatus.OK, procedimientoService.obtenerProcedimientoPorNombre(nombre), true);
     }
+
+    @GetMapping("/buscar/{nombre}/{idServicio}")
+    public ResponseEntity<Object> buscarPorNombreYServicio(
+            @PathVariable String nombre,
+            @PathVariable Long idServicio) {
+            return ResponseHandler.generateResponse(HttpStatus.OK, procedimientoService.obtenerProcedimientoPorNombreYServicio(nombre,idServicio), true);
+    }
+
 }

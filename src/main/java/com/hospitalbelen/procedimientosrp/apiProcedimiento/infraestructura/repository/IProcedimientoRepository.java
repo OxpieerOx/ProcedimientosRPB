@@ -35,4 +35,6 @@ public interface IProcedimientoRepository extends JpaRepository<Procedimiento, L
 
     Procedimiento findByNombre(String nombre);
 
+    Optional<Procedimiento> findByNombreAndServicioId(String nombre, Long idServicio);
+
 }

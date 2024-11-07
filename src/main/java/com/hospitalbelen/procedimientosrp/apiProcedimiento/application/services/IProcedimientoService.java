@@ -13,6 +13,8 @@ public interface IProcedimientoService {
 
     Procedimiento obtenerProcedimientoPorNombre(String nombre);
     Procedimiento actualizarProcedimiento(Long id, Procedimiento procedimiento);
+
+    Procedimiento obtenerProcedimientoPorNombreYServicio(String nombre, Long idServicio);
     void eliminarProcedimiento(Long id);
 
 

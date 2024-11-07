@@ -88,6 +88,11 @@ public class ProcedimientoService implements IProcedimientoService {
     }
 
     @Override
+    public Procedimiento obtenerProcedimientoPorNombreYServicio(String nombre, Long idServicio) {
+        return procedimientoRepository.findByNombreAndServicioId(nombre, idServicio).orElse(null);
+    }
+
+    @Override
     public void eliminarProcedimiento(Long id) {
         procedimientoRepository.deleteById(id);
     }

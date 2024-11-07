@@ -46,7 +46,7 @@ public class ProgramacionService implements IProgramacionService {
 
     @Override
     public List<Programacion> findByProcedimientoId(Long idProcedimiento) {
-        return iProgramacionRepository.findByProcedimientoId(idProcedimiento);
+        return iProgramacionRepository.findByProcedimientoIdOrderByFecha(idProcedimiento);
     }
 
     @Override
